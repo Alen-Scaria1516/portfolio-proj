@@ -8,39 +8,39 @@ import { z } from 'zod';
 
 type FormData = z.infer<typeof formSchema>;
 
-const TechnologiesInput: React.FC = () => {
+const SkillsInput: React.FC = () => {
   const { register, setValue, watch } = useFormContext<FormData>();
-  const [tech, setTech] = useState<string>('');
-  const technologies: string[] = watch('step3.technologies') || [];
+  const [skill, setSkill] = useState<string>('');
+  const Skills: string[] = watch('step5') || [];
 
-  const addTechnology = () => {
-    if (tech && !technologies.includes(tech)) {
-      setValue('step3.technologies', [...technologies, tech]);
-      setTech('');
+  const addSkill = () => {
+    if (skill && !Skills.includes(skill)) {
+      setValue('step5', [...Skills, skill]);
+      setSkill('');
     }
   };
 
-  const removeTechnology = (techToRemove: string) => {
-    setValue('step3.technologies', technologies.filter(t => t !== techToRemove));
+  const removeSkill = (skillToRemove: string) => {
+    setValue('step5', Skills.filter(t => t !== skillToRemove));
   };
 
   return (
     <div className="flex flex-col items-start">
-      <label>Technologies:</label>
+      <label>Skills:</label>
       <div className="flex items-center">
         <Input 
-          value={tech} 
-          onChange={(e) => setTech(e.target.value)} 
-          placeholder="Add technology"
+          value={skill} 
+          onChange={(e) => setSkill(e.target.value)} 
+          placeholder="Add Skill"
         />
-        <Button onClick={addTechnology}>Add</Button>
+        <Button onClick={addSkill}>Add</Button>
       </div>
       <div className="flex flex-wrap mt-2">
-        {technologies.map((tech, index) => (
+        {Skills.map((skill, index) => (
           <div key={index} className="m-1 p-2 bg-gray-200 rounded flex items-center">
-            {tech} 
+            {skill} 
             <button 
-              onClick={() => removeTechnology(tech)} 
+              onClick={() => removeSkill(skill)} 
               className="ml-2 text-red-500"
             >
               X
@@ -52,4 +52,4 @@ const TechnologiesInput: React.FC = () => {
   );
 };
 
-export default TechnologiesInput;
+export default SkillsInput;

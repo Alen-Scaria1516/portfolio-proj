@@ -13,34 +13,38 @@ import { FormControl, FormItem, FormLabel, FormMessage } from '@/components/ui/f
 import { cn } from "@/lib/utils";
 import { Button } from '../ui/button';
 import { Textarea } from "@/components/ui/textarea";
+import formSchema from '@/lib/schema';
+import { z } from 'zod';
+
+type FormData = z.infer<typeof formSchema>;
 
 const Step4Form = () => {
-  const { register, control, formState: { errors } } = useFormContext();
+  const { register, control, formState: { errors } } = useFormContext<FormData>();
   return (
     <div className='flex flex-col justify-center items-center w-96'>
       <div className='text-2xl font-bold'>Work Experience</div>
       <div className='m-4'>
         <label>Company Name</label>
-        <Input {...register('company_name', { required: 'Company Name name is required' })} placeholder='Amazon'/>
-        {errors.company_name && 
+        <Input {...register('step4.company_name', { required: 'Company Name name is required' })} placeholder='Amazon'/>
+        {errors.step4?.company_name && 
           <p>
-            {typeof errors.company_name.message === 'string' ? errors.company_name.message : ''}
+            {typeof errors.step4.company_name.message === 'string' ? errors.step4.company_name.message : ''}
           </p>
         }
       </div>
       <div className='m-4'>
         <label>Role</label>
-        <Input {...register('role', { required: 'Role is required' })} placeholder="Sweeper"/>
-        {errors.role && 
+        <Input {...register('step4.role', { required: 'Role is required' })} placeholder="Sweeper"/>
+        {errors.step4?.role && 
           <p>
-            {typeof errors.role.message === 'string' ? errors.role.message : ''}
+            {typeof errors.step4.role.message === 'string' ? errors.step4.role.message : ''}
           </p>
         }
       </div>
       <div className='m-4'>
         <label>Start Date</label>
         <Controller
-          name="work_start_date"
+          name="step4.work_start_date"
           control={control}
           render={({ field }) => (
             <FormItem className="flex flex-col">
@@ -76,7 +80,7 @@ const Step4Form = () => {
                 </PopoverContent>
               </Popover>
               <FormMessage>
-                {typeof errors.work_start_date?.message === 'string' ? errors.work_start_date.message : ''}
+                {typeof errors.step4?.work_start_date?.message === 'string' ? errors.step4.work_start_date.message : ''}
               </FormMessage>
             </FormItem>
           )}
@@ -85,7 +89,7 @@ const Step4Form = () => {
       <div className='m-4'>
         <label>End Date</label>
         <Controller
-          name="work_end_date"
+          name="step4.work_end_date"
           control={control}
           render={({ field }) => (
             <FormItem className="flex flex-col">
@@ -121,7 +125,7 @@ const Step4Form = () => {
                 </PopoverContent>
               </Popover>
               <FormMessage>
-                {typeof errors.work_end_date?.message === 'string' ? errors.work_end_date.message : ''}
+                {typeof errors.step4?.work_end_date?.message === 'string' ? errors.step4.work_end_date.message : ''}
               </FormMessage>
             </FormItem>
           )}
@@ -132,11 +136,11 @@ const Step4Form = () => {
         <Textarea
           placeholder="Tell us a little bit about your Work Experience"
           className="w-60"
-          {...register('work_description', { required: 'Work description is required' })}
+          {...register('step4.work_description', { required: 'Work description is required' })}
         />
-        {errors.work_description && 
+        {errors.step4?.work_description && 
           <p>
-            {typeof errors.work_description.message === 'string' ? errors.work_description.message : ''}
+            {typeof errors.step4.work_description.message === 'string' ? errors.step4.work_description.message : ''}
           </p>
         }
       </div>

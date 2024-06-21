@@ -3,34 +3,39 @@ import { useFormContext } from 'react-hook-form';
 import TechnologiesInput from '../ui/TechnologiesInput';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '../ui/textarea';
+import formSchema from '@/lib/schema';
+import { z } from 'zod';
+
+type FormData = z.infer<typeof formSchema>;
+
 
 
 const Step3Form = () => {
-  const { register, formState: { errors } } = useFormContext();
+  const { register, formState: { errors } } = useFormContext<FormData>();
 
   return (
     <div className='flex flex-col justify-center items-center w-96'>
       <div className='text-2xl font-bold'>Project Details</div>
       <div className='m-4'>
         <label>Project Name</label>
-        <Input {...register('projectName', { required: 'Project name is required' })} placeholder='Netflix clone' />
-        {errors.projectName && 
-          <p>{typeof errors.projectName.message === 'string' ? errors.projectName.message : ''}</p>
+        <Input {...register('step3.title', { required: 'Project name is required' })} placeholder='Netflix clone' />
+        {errors.step3?.title && 
+          <p>{typeof errors.step3.title.message === 'string' ? errors.step3.title.message : ''}</p>
         }
       </div>
       <div className='m-4'>
         <label>Project Link</label>
-        <Input {...register('url', { required: 'Project Link is required' })} type="url"/>
-        {errors.url && 
+        <Input {...register('step3.url', { required: 'Project Link is required' })} type="url"/>
+        {errors.step3?.url && 
           <p>
-            {typeof errors.url.message === 'string' ? errors.url.message : ''}
+            {typeof errors.step3.url.message === 'string' ? errors.step3.url.message : ''}
           </p>
         }
     </div>
       <div className='m-4'>
         <TechnologiesInput />
-        {errors.technologies && 
-          <p>{typeof errors.technologies.message === 'string' ? errors.technologies.message : ''}</p>
+        {errors.step3?.technologies && 
+          <p>{typeof errors.step3.technologies.message === 'string' ? errors.step3.technologies.message : ''}</p>
         }
       </div>
       <div className='m-4'>
@@ -38,11 +43,11 @@ const Step3Form = () => {
         <Textarea
           placeholder="Tell us a little bit about your Project"
           className="w-60"
-          {...register('project_description', { required: 'Project description is required' })}
+          {...register('step3.project_description', { required: 'Project description is required' })}
         />
-        {errors.project_description && 
+        {errors.step3?.project_description && 
           <p>
-            {typeof errors.project_description.message === 'string' ? errors.project_description.message : ''}
+            {typeof errors.step3.project_description.message === 'string' ? errors.step3.project_description.message : ''}
           </p>
         }
       </div>

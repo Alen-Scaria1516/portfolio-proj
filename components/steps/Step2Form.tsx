@@ -13,34 +13,38 @@ import { FormControl, FormItem, FormLabel, FormMessage } from '@/components/ui/f
 import { cn } from "@/lib/utils";
 import { Button } from '../ui/button';
 import { Textarea } from "@/components/ui/textarea";
+import formSchema from '@/lib/schema';
+import { z } from 'zod';
+
+type FormData = z.infer<typeof formSchema>;
 
 const Step2Form = () => {
-  const { register, control, formState: { errors } } = useFormContext();
+  const { register, control, formState: { errors } } = useFormContext<FormData>();
   return (
     <div className='flex flex-col justify-center items-center w-96'>
       <div className='text-2xl font-bold'>Education</div>
       <div className='m-4'>
         <label>Name of the Institution</label>
-        <Input {...register('institution', { required: 'Institution name is required' })} placeholder='IITB'/>
-        {errors.institution && 
+        <Input {...register('step2.institution', { required: 'Institution name is required' })} placeholder='IITB'/>
+        {errors.step2?.institution && 
           <p>
-            {typeof errors.institution.message === 'string' ? errors.institution.message : ''}
+            {typeof errors.step2.institution.message === 'string' ? errors.step2.institution.message : ''}
           </p>
         }
       </div>
       <div className='m-4'>
         <label>Highest Qualification</label>
-        <Input {...register('degree', { required: 'Highest Qualification is required' })} placeholder="B.Tech"/>
-        {errors.degree && 
+        <Input {...register('step2.degree', { required: 'Highest Qualification is required' })} placeholder="B.Tech"/>
+        {errors.step2?.degree && 
           <p>
-            {typeof errors.degree.message === 'string' ? errors.degree.message : ''}
+            {typeof errors.step2.degree.message === 'string' ? errors.step2.degree.message : ''}
           </p>
         }
       </div>
       <div className='m-4'>
         <label>Start Date</label>
         <Controller
-          name="start_date"
+          name="step2.start_date"
           control={control}
           render={({ field }) => (
             <FormItem className="flex flex-col">
@@ -76,7 +80,7 @@ const Step2Form = () => {
                 </PopoverContent>
               </Popover>
               <FormMessage>
-                {typeof errors.start_date?.message === 'string' ? errors.start_date.message : ''}
+                {typeof errors.step2?.start_date?.message === 'string' ? errors.step2.start_date.message : ''}
               </FormMessage>
             </FormItem>
           )}
@@ -85,7 +89,7 @@ const Step2Form = () => {
       <div className='m-4'>
         <label>End Date</label>
         <Controller
-          name="end_date"
+          name="step2.end_date"
           control={control}
           render={({ field }) => (
             <FormItem className="flex flex-col">
@@ -121,7 +125,7 @@ const Step2Form = () => {
                 </PopoverContent>
               </Popover>
               <FormMessage>
-                {typeof errors.end_date?.message === 'string' ? errors.end_date.message : ''}
+                {typeof errors.step2?.end_date?.message === 'string' ? errors.step2.end_date.message : ''}
               </FormMessage>
             </FormItem>
           )}
@@ -132,11 +136,11 @@ const Step2Form = () => {
         <Textarea
           placeholder="Tell us a little bit about your Education"
           className="w-60"
-          {...register('description', { required: 'Description is required' })}
+          {...register('step2.description', { required: 'Description is required' })}
         />
-        {errors.description && 
+        {errors.step2?.description && 
           <p>
-            {typeof errors.description.message === 'string' ? errors.description.message : ''}
+            {typeof errors.step2.description.message === 'string' ? errors.step2.description.message : ''}
           </p>
         }
       </div>

@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import StepIndicator from '@/components/steps/StepsIndicator';
 import { useForm, FormProvider } from 'react-hook-form';
 import Step1Form from '@/components/steps/Step1Form';
+import { zodResolver } from "@hookform/resolvers/zod";
 import Step2Form from '@/components/steps/Step2Form';
 import Step3Form from '@/components/steps/Step3Form';
 import Step4Form from '@/components/steps/Step4Form';
 import Step5Form from '@/components/steps/Step5Form';
+import formSchema from '@/lib/schema';
 
 type Step = {
   title: string;
@@ -16,12 +18,19 @@ type Step = {
 const Page = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const methods = useForm({
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      technologies: [],
-      skills: []
+      step1: {},
+      step2:{},
+      step3: {},
+      step4: {},
+      step5: []
     }
   });
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = async (data: FormData) => {
+    console.log(data);
+  };
+
 
   const steps: Step[] = [{
     title: "User Details",
