@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
@@ -20,6 +20,9 @@ type FormData = z.infer<typeof formSchema>;
 
 const Step4Form = () => {
   const { register, control, formState: { errors } } = useFormContext<FormData>();
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
   return (
     <div className='flex flex-col justify-center items-center w-96'>
       <div className='text-2xl font-bold'>Work Experience</div>

@@ -25,8 +25,8 @@ const formSchema = z.object({
     step3: z.object({
         title: z.string().min(1),
         project_description: z.string(),
-        start_date: z.string().datetime(),
-        end_date: z.string().datetime(),
+        // start_date: z.string().datetime(),
+        // end_date: z.string().datetime(),
         technologies: z.array(z.string()).min(1, 'At least one technology is required'),
         url: z.string().url(),
     }),

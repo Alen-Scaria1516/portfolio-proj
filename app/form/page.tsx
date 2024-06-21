@@ -17,15 +17,8 @@ type Step = {
 
 const Page = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const methods = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      step1: {},
-      step2:{},
-      step3: {},
-      step4: {},
-      step5: []
-    }
+  const methods = useForm<FormData>({
+    resolver: zodResolver(formSchema)
   });
   const onSubmit = async (data: FormData) => {
     console.log(data);
