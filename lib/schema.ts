@@ -1,6 +1,13 @@
 import { z } from 'zod'
 const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
 
+const educationSchema = z.object({
+    institution: z.string().min(1, { message: 'Enter Name of Institution' }),
+    degree: z.string().min(1),
+    start_date: z.string().datetime(),
+    end_date: z.string().datetime(),
+    description: z.string(),
+});
 
 const formSchema = z.object({
     step1: z.object({
@@ -15,13 +22,7 @@ const formSchema = z.object({
             return ['.jpeg', '.jpg', '.png'].some(extension => url.toLowerCase());
           }, { message: 'Image URL must end with .jpeg, .jpg, or .png' })
     }),
-    step2: z.object({
-        institution: z.string().min(1, { message: 'Enter Name of Institution' }),
-        degree: z.string().min(1),
-        start_date: z.string().datetime(),
-        end_date: z.string().datetime(),
-        description: z.string(),
-    }),
+    step2: z.array(educationSchema).min(1, { message: 'At least one education entry is required' }),
     step3: z.object({
         title: z.string().min(1),
         project_description: z.string(),

@@ -41,7 +41,7 @@ const Step1Form = () => {
           </p>
         }
     </div>
-    <div className='m-4'>
+    <div className='m-2'>
         <label>Image Link</label>
         <Input {...register('step1.profile_pic', { required: 'Image link is required' })} type="url"/>
         {errors.step1?.profile_pic && 

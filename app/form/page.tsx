@@ -9,6 +9,7 @@ import Step3Form from '@/components/steps/Step3Form';
 import Step4Form from '@/components/steps/Step4Form';
 import Step5Form from '@/components/steps/Step5Form';
 import formSchema from '@/lib/schema';
+import { Button } from '@/components/ui/button';
 
 type Step = {
   title: string;
@@ -20,6 +21,21 @@ const Page = () => {
   const methods = useForm<FormData>({
     resolver: zodResolver(formSchema)
   });
+
+  const getFirstErrorStep = (errors: any) => {
+    const stepKeys = Object.keys(errors);
+    if (stepKeys.length > 0) {
+      const firstErrorStep = stepKeys[0];
+      return parseInt(firstErrorStep.replace('step', '')) - 1; // Convert step1 -> 0, step2 -> 1, etc.
+    }
+    return 0;
+  };
+
+  const onError = (errors: any) => {
+    const stepWithFirstError = getFirstErrorStep(errors);
+    setCurrentStep(stepWithFirstError);
+  };
+
   const onSubmit = async (data: FormData) => {
     console.log(data);
   };
@@ -62,11 +78,21 @@ const Page = () => {
             </div>
             <div className='flex flex-col justify-center items-center h-full w-full md:w-2/3 bg-blue-500'>
             <FormProvider {...methods}>
-              <form onSubmit={methods.handleSubmit(onSubmit)}>
+              <form onSubmit={methods.handleSubmit(onSubmit, onError)}>
                 {stepForms[currentStep]}
-                <button type="button" onClick={() => setCurrentStep(currentStep - 1)} disabled={currentStep === 0}>Back</button>
-                <button type="button" onClick={() => setCurrentStep(currentStep + 1)} disabled={currentStep === steps.length - 1}>Next</button>
-                {currentStep === steps.length - 1 && <button type="submit">Submit</button>}
+                <div className='flex justify-between items-center m-2'>
+                <Button type="button" onClick={() => setCurrentStep(currentStep - 1)} disabled={currentStep === 0}>Back</Button>
+                {currentStep < steps.length - 1 && (
+                  <Button 
+                    type="button" 
+                    onClick={() => setCurrentStep(currentStep + 1)} 
+                    disabled={currentStep === steps.length - 1}
+                  >
+                    Next
+                  </Button>
+                )}
+                {currentStep === steps.length - 1 && <Button type="submit">Submit</Button>}
+                </div>
               </form>
             </FormProvider>
             </div>
