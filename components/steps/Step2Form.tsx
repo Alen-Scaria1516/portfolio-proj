@@ -22,14 +22,11 @@ const Step2Form = () => {
     name: "step2"
   });
 
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-
   return (
     <div className='flex flex-col justify-center items-center w-96'>
       <div className='text-2xl font-bold'>Education</div>
       <ScrollArea className='h-screen w-full rounded-md border p-4'>
+      <div>{fields.length == 0 ? errors.step2?.message : "" }</div>
       {fields.map((item, index) => (
         <div key={item.id} className='w-full'>
           <div className='m-4'>

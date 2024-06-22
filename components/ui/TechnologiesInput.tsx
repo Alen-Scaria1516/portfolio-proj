@@ -8,20 +8,24 @@ import { z } from 'zod';
 
 type FormData = z.infer<typeof formSchema>;
 
-const TechnologiesInput: React.FC = () => {
+interface TechnologiesInputProps{
+  index: number
+}
+
+const TechnologiesInput: React.FC<TechnologiesInputProps> = ({index}) => {
   const { register, setValue, watch } = useFormContext<FormData>();
   const [tech, setTech] = useState<string>('');
-  const technologies: string[] = watch('step3.technologies') || [];
+  const technologies: string[] = watch(`step3.${index}.technologies`) || [];
 
   const addTechnology = () => {
     if (tech && !technologies.includes(tech)) {
-      setValue('step3.technologies', [...technologies, tech]);
+      setValue(`step3.${index}.technologies`, [...technologies, tech]);
       setTech('');
     }
   };
 
   const removeTechnology = (techToRemove: string) => {
-    setValue('step3.technologies', technologies.filter(t => t !== techToRemove));
+    setValue(`step3.${index}.technologies`, technologies.filter(t => t !== techToRemove));
   };
 
   return (

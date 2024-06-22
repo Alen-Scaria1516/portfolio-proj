@@ -1,7 +1,7 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import StepIndicator from '@/components/steps/StepsIndicator';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, FieldValues, Path } from 'react-hook-form';
 import Step1Form from '@/components/steps/Step1Form';
 import { zodResolver } from "@hookform/resolvers/zod";
 import Step2Form from '@/components/steps/Step2Form';
@@ -10,36 +10,20 @@ import Step4Form from '@/components/steps/Step4Form';
 import Step5Form from '@/components/steps/Step5Form';
 import formSchema from '@/lib/schema';
 import { Button } from '@/components/ui/button';
+import {z} from 'zod'
 
 type Step = {
   title: string;
   stepNumber: number;
 };
 
+type FormData = z.infer<typeof formSchema>
+
 const Page = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const methods = useForm<FormData>({
     resolver: zodResolver(formSchema)
   });
-
-  const getFirstErrorStep = (errors: any) => {
-    const stepKeys = Object.keys(errors);
-    if (stepKeys.length > 0) {
-      const firstErrorStep = stepKeys[0];
-      return parseInt(firstErrorStep.replace('step', '')) - 1; // Convert step1 -> 0, step2 -> 1, etc.
-    }
-    return 0;
-  };
-
-  const onError = (errors: any) => {
-    const stepWithFirstError = getFirstErrorStep(errors);
-    setCurrentStep(stepWithFirstError);
-  };
-
-  const onSubmit = async (data: FormData) => {
-    console.log(data);
-  };
-
 
   const steps: Step[] = [{
     title: "User Details",
@@ -66,6 +50,38 @@ const Page = () => {
     <Step5Form key={5}/>
   ]
 
+  const onError = (errors: any) => {
+    const stepWithFirstError = getFirstErrorStep(errors);
+    setCurrentStep(stepWithFirstError);
+  };
+
+  const onSubmit = async (data: FormData) => {
+    console.log(data);
+  };
+
+  const getFirstErrorStep = (errors: any) => {
+    const stepKeys = Object.keys(errors);
+    if (stepKeys.length > 0) {
+      const firstErrorStep = stepKeys[0];
+      return parseInt(firstErrorStep.replace('step', '')) - 1; // Convert step1 -> 0, step2 -> 1, etc.
+    }
+    return 0;
+  };
+
+  const validateCurrentStep = async () => {
+    const result = await methods.trigger(); // Validate the entire form
+    if (result) {
+      setCurrentStep(currentStep + 1); // Move to the next step if validation passes
+    } else {
+      const firstErrorStep = getFirstErrorStep(methods.formState.errors);
+      setCurrentStep(firstErrorStep); // Stay on the current step with errors if validation fails
+    }
+  };
+
+  const handleBack = () => {
+    setCurrentStep(currentStep - 1); // Move back one step
+  };
+
   return (
     <div className='flex justify-start items-center flex-col w-full h-screen bg-slate-500'>
         <div className='flex justify-start items-center pl-10 text-2xl font-bold w-full h-14'>
@@ -85,7 +101,7 @@ const Page = () => {
                 {currentStep < steps.length - 1 && (
                   <Button 
                     type="button" 
-                    onClick={() => setCurrentStep(currentStep + 1)} 
+                    onClick={validateCurrentStep} 
                     disabled={currentStep === steps.length - 1}
                   >
                     Next
@@ -98,7 +114,7 @@ const Page = () => {
             </div>
         </div>
     </div>
-  )
-}
+  );
+};
 
 export default Page;

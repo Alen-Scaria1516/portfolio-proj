@@ -8,9 +8,7 @@ type FormData = z.infer<typeof formSchema>;
 
 const Step5Form = () => {
   const { register, formState: { errors } } = useFormContext<FormData>();
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
+
   return (
     <div className='flex flex-col justify-center items-center w-96'>
       <div className='text-2xl font-bold'>Skills</div>

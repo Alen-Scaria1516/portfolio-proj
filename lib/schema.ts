@@ -9,6 +9,23 @@ const educationSchema = z.object({
     description: z.string(),
 });
 
+const projectSchema = z.object({
+    title: z.string().min(1),
+    project_description: z.string(),
+    start_date: z.string().datetime(),
+    end_date: z.string().datetime(),
+    technologies: z.array(z.string()).min(1, 'At least one technology is required'),
+    url: z.string().url(),
+});
+
+const workSchema = z.object({
+    company_name: z.string(),
+    role: z.string(),
+    work_start_date: z.string().datetime(),
+    work_end_date: z.string().datetime(),
+    work_description: z.string(),
+});
+
 const formSchema = z.object({
     step1: z.object({
         username: z.string().min(1, { message: 'username is required' }),
@@ -23,21 +40,8 @@ const formSchema = z.object({
           }, { message: 'Image URL must end with .jpeg, .jpg, or .png' })
     }),
     step2: z.array(educationSchema).min(1, { message: 'At least one education entry is required' }),
-    step3: z.object({
-        title: z.string().min(1),
-        project_description: z.string(),
-        // start_date: z.string().datetime(),
-        // end_date: z.string().datetime(),
-        technologies: z.array(z.string()).min(1, 'At least one technology is required'),
-        url: z.string().url(),
-    }),
-    step4: z.object({
-        company_name: z.string(),
-        role: z.string(),
-        work_start_date: z.string().datetime(),
-        work_end_date: z.string().datetime(),
-        work_description: z.string(),
-    }),
+    step3: z.array(projectSchema).min(1, { message: 'At least one education entry is required' }),
+    step4: z.array(workSchema).min(1, { message: 'At least one education entry is required' }),
     step5: z.array(z.string()).min(1, 'At least one skill is required')
   });
 
