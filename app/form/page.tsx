@@ -67,9 +67,14 @@ const Page = () => {
     }
     return 0;
   };
+  
+  const pages: string[] = ['step1', 'step2', 'step3', 'step4', 'step5'];
+  type PageName = 'step1' | 'step2' | 'step3' | 'step4' | 'step5';
 
   const validateCurrentStep = async () => {
-    const result = await methods.trigger(); // Validate the entire form
+    const page = pages[currentStep]
+    const result = await methods.trigger( page as PageName,{shouldFocus : true}); // Validate the entire form
+    console.log(result);
     if (result) {
       setCurrentStep(currentStep + 1); // Move to the next step if validation passes
     } else {
@@ -97,7 +102,7 @@ const Page = () => {
               <form onSubmit={methods.handleSubmit(onSubmit, onError)}>
                 {stepForms[currentStep]}
                 <div className='flex justify-between items-center m-2'>
-                <Button type="button" onClick={() => setCurrentStep(currentStep - 1)} disabled={currentStep === 0}>Back</Button>
+                <Button type="button" onClick={handleBack} disabled={currentStep === 0}>Back</Button>
                 {currentStep < steps.length - 1 && (
                   <Button 
                     type="button" 
